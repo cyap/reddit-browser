@@ -9,9 +9,6 @@ import Newsfeed from './components/Newsfeed'
 
 
 class App extends Component {
-  constructor(props) {
-    super(props);
-  }
   handleSearch(searchTerm) {
     request.get(`https://www.reddit.com/r/${searchTerm}.json`, 
       (err, res, body) => {
