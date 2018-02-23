@@ -7,9 +7,9 @@ class Post extends React.Component {
 			<div className="post">
 				<div className="titleBox">
 					<img className="thumbnail" src={this.props.post.thumbnail || logo} alt="?"/>
-					<span className="title">
+					<a href={this.props.post.url} className="title">
 						{new DOMParser().parseFromString(this.props.post.title, "text/html").documentElement.textContent}
-					</span>
+					</a>
 				</div>
 				<div>
 					<span className="author">Author: {this.props.post.author}</span>
