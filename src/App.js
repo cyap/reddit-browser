@@ -13,17 +13,20 @@ class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      posts: []
+      posts: [],
+      fetchingPosts: ''
     }
   }
   handleSearch = (searchTerm) => {
-    request.get(`https://www.reddit.com/r/${searchTerm}.json`, 
-      (err, res, body) => {
-        console.log(err);
-        console.log(res);
-        console.log(body);
-        this.setState({posts:jsonToPosts(body)})}
-    )
+    this.setState({fetchingPosts:"Loading..."}, () => {
+      request.get(`https://www.reddit.com/r/${searchTerm}.json`, 
+        (err, res, body) => {
+          console.log(err);
+          console.log(res);
+          console.log(body);
+          this.setState({posts:jsonToPosts(body), fetchingPosts:""})}
+      )
+    })
   }
 
 
@@ -34,6 +37,7 @@ class App extends Component {
           onSearch={this.handleSearch}
         />
         <Filters/>
+        {this.state.fetchingPosts}
         <Newsfeed posts={this.state.posts}/>
       </div>
     );
