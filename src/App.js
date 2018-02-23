@@ -18,7 +18,11 @@ class App extends Component {
   }
   handleSearch = (searchTerm) => {
     request.get(`https://www.reddit.com/r/${searchTerm}.json`, 
-      (err, res, body) => this.setState({posts:jsonToPosts(body)})
+      (err, res, body) => {
+        console.log(err);
+        console.log(res);
+        console.log(body);
+        this.setState({posts:jsonToPosts(body)})}
     )
   }
 
@@ -29,7 +33,6 @@ class App extends Component {
         <SearchBar 
           onSearch={this.handleSearch}
         />
-        {this.state.posts.length}
         <Filters/>
         <Newsfeed posts={this.state.posts}/>
       </div>

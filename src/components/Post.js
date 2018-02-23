@@ -6,7 +6,7 @@ class Post extends React.Component {
 		return (
 			<div className="post">
 				<div className="titleBox">
-					<img className="thumbnail" src={this.props.post.thumbnail || logo} alt="?" className="thumbnail"/>
+					<img className="thumbnail" src={this.props.post.thumbnail || logo} alt="?"/>
 					<span className="title">
 						{this.props.post.title}
 					</span>

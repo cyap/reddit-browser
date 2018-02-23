@@ -1,5 +1,3 @@
-import request from 'request';
-
 function jsonToPosts(json) {
 	let rawPosts = JSON.parse(json).data.children;
 	let posts = rawPosts.map(post => {
