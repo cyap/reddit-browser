@@ -6,7 +6,9 @@ function jsonToPosts(body) {
 			author: post.data.author,
 			score: post.data.score, 
 			thumbnail: validate_thumbnail(post),
-			url: post.data.url
+			url: post.data.url,
+			selfPost: post.data.is_self,
+			selftext: post.data.selftext
 		}
 	})
 	return posts;

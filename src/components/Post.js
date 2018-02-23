@@ -8,12 +8,27 @@ class Post extends React.Component {
       open: false
     }
 	}
+	handleClick(e) {
+		if (this.props.post.selfPost){
+			e.preventDefault();
+			this.setState({open: !this.state.open})
+		}
+	}
+	selfPostExpansion = () => {
+		if (this.props.post.selfPost) {
+			return (
+				<div className={"postContent" + (this.state.open ? '' : ' closed')}>
+					{this.props.post.selftext}
+				</div>
+			)
+		}
+	}
 	render() {
 		return (
 			<div className="post">
 				<div className="titleBox">
 					<img className="thumbnail" src={this.props.post.thumbnail || logo} alt="?"/>
-					<a href={this.props.post.url} className="title">
+					<a href={this.props.post.url} onClick={(e) => this.handleClick(e)} className="title">
 						{new DOMParser().parseFromString(this.props.post.title, "text/html").documentElement.textContent}
 					</a>
 				</div>
@@ -21,9 +36,7 @@ class Post extends React.Component {
 					<span className="author">Author: {this.props.post.author}</span>
 					<span className="score">Score: {this.props.post.score}</span>
 				</div>
-				<div className={"postContent" + (this.state.open ? '' : ' closed')}>
-					Foo
-				</div>
+				{this.selfPostExpansion()}
 			</div>
 		)
 	}
