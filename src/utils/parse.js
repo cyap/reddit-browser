@@ -1,5 +1,5 @@
-function jsonToPosts(json) {
-	let rawPosts = JSON.parse(json).data.children;
+function jsonToPosts(body) {
+	let rawPosts = body.data.children;
 	let posts = rawPosts.map(post => {
 		return {
 			title: post.data.title,

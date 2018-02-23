@@ -14,22 +14,38 @@ class App extends Component {
     super(props);
     this.state = {
       posts: [],
-      fetchingPosts: ''
+      status: "",
     }
   }
+  generateError = (subreddit, reason) => {
+    this.setState({
+      status: `Cannot access subreddit: ${subreddit}. Reason: ${reason}.`,
+      posts: []
+    })
+  }
   handleSearch = (searchTerm) => {
-    this.setState({fetchingPosts:"Loading..."}, () => {
+    this.setState({status:"Loading..."}, () => {
       request.get(`https://www.reddit.com/r/${searchTerm}.json`, 
         (err, res, body) => {
-          console.log(err);
-          console.log(res);
-          console.log(body);
-          this.setState({posts:jsonToPosts(body), fetchingPosts:""})}
+          if (err) {
+            this.generateError(searchTerm, "Invalid subreddit");
+          }
+          else {
+            let data = JSON.parse(body);
+            if (data.error) {
+              this.generateError(searchTerm, data.reason);
+            }
+            else {
+              this.setState({
+                status: "",
+                posts: jsonToPosts(data)
+              })
+            }
+          }
+        }
       )
     })
   }
-
-
   render() {
     return (
       <div className="App">
@@ -37,7 +53,7 @@ class App extends Component {
           onSearch={this.handleSearch}
         />
         <Filters/>
-        {this.state.fetchingPosts}
+        {this.state.status}
         <Newsfeed posts={this.state.posts}/>
       </div>
     );
