@@ -15,7 +15,10 @@ class App extends Component {
     this.state = {
       posts: [],
       status: "",
-      subreddit: ""
+      subreddit: "",
+      before: null,
+      after: null,
+      pageCount: 0
     }
   }
   generateError = (subreddit, reason) => {
@@ -28,13 +31,14 @@ class App extends Component {
   handleFilter = (filter) => {
     this.handleSearch(this.state.subreddit, filter)
   }
-  handleSearch = (searchTerm, filter="") => {
+  handleSearch = (searchTerm, filter="", paramString="") => {
     this.setState({
         status:"Loading...",
         posts: [],
-        subreddit: ""
+        subreddit: "",
+        pageCount: paramString ? this.state.pageCount : 0
       }, () => {
-      request.get(`https://www.reddit.com/r/${searchTerm}/${filter}.json`, 
+      request.get(`https://www.reddit.com/r/${searchTerm}/${filter}.json?${paramString}`, 
         (err, res, body) => {
           if (err) {
             this.generateError(searchTerm, "Invalid subreddit");
@@ -48,7 +52,9 @@ class App extends Component {
               this.setState({
                 status: "",
                 posts: jsonToPosts(data),
-                subreddit:searchTerm
+                subreddit:searchTerm,
+                before: data.data.before,
+                after: data.data.after
               })
             }
           }
@@ -56,6 +62,37 @@ class App extends Component {
       )
     })
   }
+  handlePage = (key, value) => {
+    let addCount;
+    if (this.state.pageCount % 25 === 0) {
+      if (key === "after") {
+        addCount = 25;
+      }
+      else
+        addCount = 1;
+    }
+    else {
+      if (key === "after") {
+        addCount = -1;
+      }
+      else {
+        addCount = -25;
+      }
+    }
+    this.setState({pageCount:this.state.pageCount + addCount}, () =>
+      this.handleSearch(this.state.subreddit, "", `count=${this.state.pageCount}&${key}=${value}`)
+    )
+  }
+  pagination = () => (
+    <div>
+      {this.state.before ? <button
+        onClick={(e) => this.handlePage("before", this.state.before)}
+        >Previous</button> : ""}
+      {this.state.after ? <button
+        onClick={(e) => this.handlePage("after", this.state.after)}
+        >Next</button> : ""}
+    </div>
+  )
   render() {
     return (
       <div className="App">
@@ -67,6 +104,7 @@ class App extends Component {
           {this.state.status}
         </div>
         <Newsfeed posts={this.state.posts}/>
+        {this.pagination()}
       </div>
     );
   }
