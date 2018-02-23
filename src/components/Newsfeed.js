@@ -8,9 +8,7 @@ class Newsfeed extends React.Component {
 				{this.props.posts.map((post, i) => (
 						<Post 
 							key={i}
-							title={post.title}
-							author={post.author}
-							score={post.score}
+							post={post}
 						/>
 					)
 				)}
