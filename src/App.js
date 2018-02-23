@@ -10,17 +10,15 @@ import Newsfeed from './components/Newsfeed';
 import jsonToPosts from './utils/parse';
 
 class App extends Component {
-  handleSearch(searchTerm) {
+  constructor(props) {
+    super(props);
+    this.state = {
+      posts: []
+    }
+  }
+  handleSearch = (searchTerm) => {
     request.get(`https://www.reddit.com/r/${searchTerm}.json`, 
-      (err, res, body) => {
-        // Organize json
-        // Update view / re-render newsfeed
-        // Loading animation
-        // Call to re-render newsfeed
-        console.log(body);
-        console.log(jsonToPosts(body));
-        
-      }
+      (err, res, body) => this.setState({posts:jsonToPosts(body)})
     )
   }
 
@@ -31,9 +29,9 @@ class App extends Component {
         <SearchBar 
           onSearch={this.handleSearch}
         />
-        <Filters
-        />
-        <Newsfeed/>
+        {this.state.posts.length}
+        <Filters/>
+        <Newsfeed posts={this.state.posts}/>
       </div>
     );
   }
