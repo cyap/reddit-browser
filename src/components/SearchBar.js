@@ -17,7 +17,7 @@ class SearchBar extends React.Component {
 	}
 	render() {
 		return (
-			<form onSubmit={e => this.handleSubmit(e)}>
+			<form className="searchBar" onSubmit={e => this.handleSubmit(e)}>
 				<input
 					type="text"
 					placeholder="Enter subreddit name"
