@@ -36,7 +36,22 @@ span {
   margin: 2px;
 
 }
+
 .closed {
   display: none;
 }
 
+.filters {
+  margin: 7.5px;
+  text-align: center;
+}
+
+.filterTab {
+  padding: 5px;
+
+}
+
+.infoMessage {
+  margin: 5px;
+  text-align: center;
+}
