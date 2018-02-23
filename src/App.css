@@ -1,5 +1,5 @@
 .App {
-  text-align: center;
+  //text-align: center;
 }
 
 .App-logo {
@@ -25,4 +25,31 @@
 @keyframes App-logo-spin {
   from { transform: rotate(0deg); }
   to { transform: rotate(360deg); }
+}
+
+.post {
+  border-bottom: 1px solid;
+  padding: 5px;
+}
+
+.titleBox {
+  padding-bottom: 5px;
+  position: relative;
+}
+
+.title {
+  position: absolute;
+  top: 45%;
+}
+
+span {
+  padding-right: 10px;
+}
+
+.thumbnail {
+  width: 150px;
+  height: 100px;
+  min-height: 75px;
+  margin-right: 5px;
+  border: 1px solid;
 }
