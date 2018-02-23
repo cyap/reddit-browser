@@ -15,6 +15,7 @@ class App extends Component {
     this.state = {
       posts: [],
       status: "",
+      subreddit: ""
     }
   }
   generateError = (subreddit, reason) => {
@@ -23,9 +24,17 @@ class App extends Component {
       posts: []
     })
   }
-  handleSearch = (searchTerm) => {
-    this.setState({status:"Loading..."}, () => {
-      request.get(`https://www.reddit.com/r/${searchTerm}.json`, 
+  generateFilters = () => this.state.subreddit ? <Filters onFilter={this.handleFilter} /> : ""
+  handleFilter = (filter) => {
+    this.handleSearch(this.state.subreddit, filter)
+  }
+  handleSearch = (searchTerm, filter="") => {
+    this.setState({
+        status:"Loading...",
+        posts: [],
+        subreddit: ""
+      }, () => {
+      request.get(`https://www.reddit.com/r/${searchTerm}/${filter}.json`, 
         (err, res, body) => {
           if (err) {
             this.generateError(searchTerm, "Invalid subreddit");
@@ -33,12 +42,13 @@ class App extends Component {
           else {
             let data = JSON.parse(body);
             if (data.error) {
-              this.generateError(searchTerm, data.reason);
+              this.generateError(searchTerm, data.message);
             }
             else {
               this.setState({
                 status: "",
-                posts: jsonToPosts(data)
+                posts: jsonToPosts(data),
+                subreddit:searchTerm
               })
             }
           }
@@ -52,8 +62,10 @@ class App extends Component {
         <SearchBar 
           onSearch={this.handleSearch}
         />
-        <Filters/>
-        {this.state.status}
+        {this.generateFilters()}
+        <div className="infoMessage">
+          {this.state.status}
+        </div>
         <Newsfeed posts={this.state.posts}/>
       </div>
     );
