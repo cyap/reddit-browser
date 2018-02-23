@@ -1,5 +1,5 @@
 import React from 'react';
-import logo from '../logo.svg'
+import logo from '../logo.svg';
 
 class Post extends React.Component {
 	render() {
@@ -8,7 +8,7 @@ class Post extends React.Component {
 				<div className="titleBox">
 					<img className="thumbnail" src={this.props.post.thumbnail || logo} alt="?"/>
 					<span className="title">
-						{this.props.post.title}
+						{new DOMParser().parseFromString(this.props.post.title, "text/html").documentElement.textContent}
 					</span>
 				</div>
 				<div>
