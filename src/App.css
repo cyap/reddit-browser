@@ -30,6 +30,13 @@ span {
   border: 1px solid;
 }
 
+.postContent {
+  border: 1px solid;
+  padding: 5px;
+  margin: 2px;
+
+}
 .closed {
   display: none;
 }
+
